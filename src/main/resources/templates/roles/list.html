@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${pageTitle}">Lista de Funções</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+<div class="table-container">
+    <div class="table-header">
+        <h2 th:text="${pageTitle}">Roles</h2>
+        <button class="btn btn-primary" onclick="window.location.href='/roles/novo'">Nova Role</button>
+    </div>
+
+    <table class="role-table" id="rolesTable">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Preenchido por Thymeleaf -->
+        <tr th:each="role : ${roles}">
+            <td th:text="${role.id}"></td>
+            <td>
+                <span class="role-badge" th:text="${role.nome}"></span>
+            </td>
+            <td>
+                <div class="action-links">
+                    <a class="action-link" th:href="@{'/roles/editar/' + ${role.id}}">Editar</a>
+                    <a class="action-link delete"
+                       th:href="@{'/roles/' + ${role.id} + '/deletar'}"
+                       onclick="return confirm('Tem certeza que deseja excluir esta role?');">Excluir</a>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    $(document).ready(function () {
+        // Carregamento AJAX
+        $.getJSON("/roles/api", function (roles) {
+            let linhas = "";
+            roles.forEach(function (r) {
+                linhas += `<tr>
+                    <td>${r.id}</td>
+                    <td><span class="role-badge">${r.nome}</span></td>
+                    <td>
+                        <div class="action-links">
+                            <a class="action-link" href="/roles/editar/${r.id}">Editar</a>
+                            <a class="action-link delete" href="/roles/delete/${r.id}"
+                               onclick="return confirm('Tem certeza que deseja excluir esta role?');">Excluir</a>
+                        </div>
+                    </td>
+                </tr>`;
+            });
+            $("#rolesTable tbody").html(linhas);
+        }).fail(function() {
+            console.error("Erro ao carregar roles via AJAX");
+        });
+    });
+</script>
+
+</body>
+</html>

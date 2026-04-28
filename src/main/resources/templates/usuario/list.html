@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${pageTitle}">Lista de Usuários</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+</head>
+<body>
+
+<div class="table-container">
+    <div class="table-header">
+        <h2 th:text="${pageTitle}">Usuários</h2>
+        <a th:href="@{/usuarios/novo}" class="btn btn-primary">Novo Usuário</a>
+    </div>
+
+    <table class="user-table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Roles</th>
+            <th>Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="usuario : ${usuarios}">
+            <td th:text="${usuario.id}"></td>
+            <td th:text="${usuario.username}"></td>
+            <td th:text="${usuario.email}"></td>
+            <td>
+                <span th:each="role : ${usuario.roles}" th:text="${role.nome}" class="role-badge"></span>
+            </td>
+            <td>
+                <div class="action-links">
+                    <a class="action-link" th:href="@{'/usuarios/' + ${usuario.id}}">Editar</a>
+                    <form th:action="@{'/usuarios/' + ${usuario.id} + '/deletar'}" method="post" style="display:inline;">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                        <button type="submit" class="action-link delete"
+                                onclick="return confirm('Tem certeza que deseja excluir?')">Excluir</button>
+                    </form>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $.getJSON("/api/usuarios", function (usuarios) {
+            let linhas = "";
+            usuarios.forEach(function (u) {
+                linhas += `<tr>
+                    <td>${u.id}</td>
+                    <td>${u.username}</td>
+                    <td>${u.email}</td>
+                    <td>
+                        <a href="/usuarios/${u.id}">Editar</a>
+                        <form action="/usuarios/${u.id}/deletar" method="post" style="display:inline;">
+                            <button type="submit" onclick="return confirm('Tem certeza que deseja excluir?')">Excluir</button>
+                        </form>
+                    </td>
+                </tr>`;
+            });
+            $("#usuariosTable tbody").html(linhas);
+        });
+    });
+</script>
+
+</body>
+</html>

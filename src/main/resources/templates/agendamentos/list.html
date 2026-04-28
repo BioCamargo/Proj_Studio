@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title th:text="${pageTitle}">Lista de Agendamentos</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <style>
+        .table-container {
+            margin: 20px;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .agendamento-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .agendamento-table th, .agendamento-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        .agendamento-table th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+        }
+        .btn {
+            padding: 8px 16px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #0069d9;
+        }
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .status-confirmado {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .status-pendente {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        .status-cancelado {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .action-links {
+            display: flex;
+            gap: 10px;
+        }
+        .action-link {
+            padding: 4px 8px;
+            border-radius: 4px;
+            text-decoration: none;
+            color: #007bff;
+        }
+        .action-link:hover {
+            text-decoration: underline;
+        }
+        .delete {
+            color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+
+<div class="table-container">
+    <div class="table-header">
+        <h2 th:text="${pageTitle}">Agendamentos</h2>
+        <a th:href="@{/agendamentos/novo}" class="btn btn-primary">Novo Agendamento</a>
+    </div>
+
+    <div class="search-container">
+        <form class="search-form" method="get" action="/agendamentos/pesquisar">
+            <input class="search-input" type="text" name="nome" placeholder="Search services..." />
+            <button class="search-btn" type="submit">Search</button>
+        </form>
+    </div>
+
+    <table class="agendamento-table">
+        <thead>
+        <tr>
+            <th>Client</th>
+            <th>Service</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="agendamento : ${agendamentos}">
+            <td th:text="${agendamento.clienteNome}"></td>
+            <td th:text="${agendamento.servicoNome}"></td>
+            <td th:text="${#temporals.format(agendamento.dataHora, 'dd/MM/yyyy')}"></td>
+            <td th:text="${#temporals.format(agendamento.dataHora, 'HH:mm')}"></td>
+            <td>
+    <span class="status-badge status-confirmado"
+          th:if="${agendamento.status == 'CONFIRMADO'}">Confirmado</span>
+                <span class="status-badge status-pendente"
+                      th:if="${agendamento.status == 'PENDENTE'}">Pendente</span>
+                <span class="status-badge status-cancelado"
+                      th:if="${agendamento.status == 'CANCELADO'}">Cancelado</span>
+            </td>
+            <td>
+                <div class="action-links">
+                    <a class="action-link" th:href="@{/agendamentos/{id}(id=${agendamento.id})}">Editar</a>
+                    <a class="action-link delete"
+                       th:href="@{/agendamentos/deletar/${agendamento.id}}"
+                       data-id="${agendamento.id}">Excluir</a>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script th:inline="javascript">
+    $(document).ready(function() {
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+
+        $('.delete').on('click', function(e) {
+            e.preventDefault();
+            var id = $(this).data('id');
+
+            if(confirm('Sure you want to exclude?')) {
+                $.ajax({
+                    type: 'POST',
+                    url: $(this).attr('href'),
+                    headers: {
+                        [header]: token,
+                        'X-HTTP-Method-Override': 'DELETE'
+                    },
+                    data: { _csrf: token },
+                    success: function() {
+                        location.reload();
+                    },
+                    error: function(xhr) {
+                        alert('Erro ao excluir: ' + xhr.responseText);
+                    }
+                });
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

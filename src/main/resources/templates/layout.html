@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${pageTitle} ?: 'Beauty Salon'">Beauty Salon</title>
+<!--    <link rel="stylesheet" href="/static/css/style.css">-->
+    <link th:href="@{/css/style.css}" rel="stylesheet" />
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto&display=swap">
+
+</head>
+<body>
+<header>
+    <h1>Beauty Salon</h1>
+    <nav>
+        <ul>
+            <li><a th:href="@{/clientes}">Clientes</a></li>
+            <li><a th:href="@{/agendamentos}">Agendamentos</a></li>
+            <li><a th:href="@{/servicos}">Serviços</a></li>
+            <li><a th:href="@{/roles}">Roles</a></li>
+            <li><a th:href="@{/usuario}">Usuários</a></li>
+        </ul>
+    </nav>
+</header>
+
+<!-- ✅ Define o fragmento main aqui -->
+<div th:fragment="main(content)">
+    <main>
+        <div th:replace="${content}"></div>
+    </main>
+</div>
+
+<footer>
+    <p>&copy; 2025 Beauty Salon</p>
+</footer>
+</body>
+</html>
+<!--    <link rel="stylesheet" th:href="@{/static/style.css}">-->

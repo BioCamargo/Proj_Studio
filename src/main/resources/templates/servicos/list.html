@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title th:text="${pageTitle}">Lista de Serviços</title>
+  <link th:href="@{/css/style.css}" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+<div class="table-container">
+  <div class="table-header">
+    <h2 th:text="${pageTitle}">Services </h2>
+    <a th:href="@{/servicos/novo}" class="btn btn-primary">Novo Serviço</a>
+  </div>
+
+  <table id="servicosTable">
+    <thead>
+    <tr>
+      <th>Image</th>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Price</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <th:block th:each="servico : ${servicos}">
+      <tr>
+        <td>
+          <div class="table-img-container" th:if="${servico.imagem}">
+            <img th:src="@{/uploads/{file}(file=${servico.imagem})}" alt="Imagem do serviço"/>
+
+          </div>
+          <div class="table-img-container" th:unless="${servico.imagem}">
+            <span>Sem imagem</span>
+          </div>
+        </td>
+        <td th:text="${servico.nome}"></td>
+        <td th:text="${servico.descricao} ?: 'Sem descrição'"></td>
+        <td class="price-cell" th:text="${#numbers.formatDecimal(servico.preco, 1, 2, 'POINT')}"></td>
+        <td>
+          <div class="action-links">
+            <a class="action-link" th:href="@{/servicos/edit/{id}(id=${servico.id})}">Editar</a>
+            <a class="action-link delete" th:href="@{/servicos/delete/{id}(id=${servico.id})}"
+               onclick="return confirm('Tem certeza que deseja excluir este serviço?');">Excluir</a>
+          </div>
+        </td>
+      </tr>
+    </th:block>
+    </tbody>
+  </table>
+</div>
+
+<div class="table-container" style="margin-top: 2rem;">
+  <div class="table-header">
+    <h2>List Service</h2>
+    <button class="btn btn-primary" onclick="window.location.href='/servicos/novo'">Novo Serviço</button>
+  </div>
+
+  <div class="loading-indicator active" id="ajaxLoading">Carregando serviços...</div>
+
+  <table id="servicosAjaxTable">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Price</th>
+      <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- AJAX preencherá aqui -->
+    </tbody>
+  </table>
+</div>
+
+<script>
+  $(document).ready(function () {
+    $.getJSON("/api/servicos", function (servicos) {
+      $('#ajaxLoading').removeClass('active');
+
+      let linhas = "";
+      servicos.forEach(function (s) {
+        linhas += `
+          <tr>
+            <td>${s.id}</td>
+            <td>${s.nome}</td>
+            <td>${s.descricao || 'Sem descrição'}</td>
+            <td class="price-cell">${s.preco.toFixed(2).replace('.', ',')}</td>
+            <td>
+              <div class="action-links">
+                <a class="action-link" href="/servicos/edit/${s.id}">Editar</a>
+                <a class="action-link delete" href="/servicos/delete/${s.id}"
+                   onclick="return confirm('Deseja excluir?')">Excluir</a>
+              </div>
+            </td>
+          </tr>`;
+      });
+      $("#servicosAjaxTable tbody").html(linhas);
+    }).fail(function() {
+      $('#ajaxLoading').html('Erro ao carregar serviços. Tente recarregar a página.');
+    });
+  });
+</script>
+
+</body>
+</html>

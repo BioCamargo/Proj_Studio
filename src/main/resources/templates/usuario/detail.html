@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalhes do Usuário</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <h2>Detalhes do Usuário</h2>
+    <div>
+        <p>ID: <span th:text="${user.id}"></span></p>
+        <p>Nome: <span th:text="${user.username}"></span></p>
+        <p>Email: <span th:text="${user.email}"></span></p>
+    </div>
+    <a th:href="@{/usuario}" class="btn">Voltar</a>
+</div>
+</body>
+</html>

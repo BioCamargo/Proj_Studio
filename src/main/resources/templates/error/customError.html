@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Error Page</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <style>
+        /* Estilos específicos para a página de erro */
+        .error-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 70vh;
+            text-align: center;
+            padding: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .error-icon {
+            font-size: 5rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            animation: bounce 2s infinite;
+        }
+
+        .error-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--dark);
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .error-code {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(121, 74, 250, 0.1);
+            border-radius: 50px;
+            display: inline-block;
+        }
+
+        .error-message {
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+            max-width: 600px;
+        }
+
+        .error-actions {
+            margin-top: 2rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-20px);}
+            60% {transform: translateY(-10px);}
+        }
+
+        /* Efeito de partículas */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(121, 74, 250, 0.2);
+            border-radius: 50%;
+            animation: float linear infinite;
+        }
+
+        @keyframes float {
+            to {
+                transform: translateY(-100vh) rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="particles" id="particles"></div>
+
+<div class="error-container">
+    <div class="error-icon">⚠️</div>
+    <h1 class="error-title">Oops! Something went wrong</h1>
+
+    <div th:if="${errorCode}" class="error-code" th:text="'Erro ' + ${errorCode}"></div>
+
+    <p class="error-message" th:if="${errorMessage}" th:text="${errorMessage}"></p>
+    <p class="error-message" th:unless="${errorMessage}">
+        We're sorry, but an unexpected error has occurred. Our team has been notified and is working to resolve the issue.
+    </p>
+
+    <div class="error-actions">
+        <a th:href="@{/}" class="btn btn-primary">Initial Page</a>
+        <a href="javascript:history.back()" class="btn btn-secondary">Back</a>
+        <a href="mailto:support@seusite.com" class="btn btn-secondary">Contact Support</a>
+    </div>
+</div>
+
+<script>
+    // Criar partículas decorativas
+    document.addEventListener('DOMContentLoaded', function() {
+        const particlesContainer = document.getElementById('particles');
+        const particleCount = 20;
+
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+
+            // Tamanho aleatório entre 5px e 15px
+            const size = Math.random() * 10 + 5;
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+
+            // Posição aleatória
+            particle.style.left = `${Math.random() * 100}%`;
+            particle.style.bottom = `-${size}px`;
+
+            // Duração da animação aleatória
+            const duration = Math.random() * 20 + 10;
+            particle.style.animationDuration = `${duration}s`;
+
+            // Atraso aleatório
+            particle.style.animationDelay = `${Math.random() * 5}s`;
+
+            particlesContainer.appendChild(particle);
+        }
+    });
+</script>
+
+</body>
+</html>

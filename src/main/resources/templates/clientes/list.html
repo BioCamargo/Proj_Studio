@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title th:text="${pageTitle}">Lista de Clientes</title>
+  <link th:href="@{/css/style.css}" rel="stylesheet">
+</head>
+<body>
+<div class="table-container">
+  <div class="table-header">
+    <h2 th:text="${pageTitle}">Clients</h2>
+    <button class="btn btn-primary" onclick="window.location.href='/clientes/novo'">New Client</button>
+  </div>
+
+  <div class="search-container">
+    <form class="search-form" method="get" action="/clientes/pesquisar">
+      <input class="search-input" type="text" name="nome" placeholder="Search client name..." />
+      <button class="search-btn" type="submit">Search</button>
+    </form>
+  </div>
+
+  <table id="clientesTable">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <th:block th:each="c : ${clientes}">
+      <tr>
+        <td th:text="${c.id}"></td>
+        <td th:text="${c.nome}"></td>
+        <td th:text="${c.email}"></td>
+        <td>
+          <div class="action-links">
+            <a class="action-link" th:href="@{/clientes/edit/{id}(id=${c.id})}">Editar</a>
+            <a class="action-link delete" th:href="@{/clientes/delete/{id}(id=${c.id})}"
+               onclick="return confirm('Sure you want to delete?');">Excluir</a>
+
+          </div>
+        <td>
+          <button class="action-link email"
+                  th:attr="data-id=${c.id}, data-name=${c.nome}"
+                  onclick="enviarLembrete(this)">
+            Send Reminder
+          </button>
+        </td>
+        </td>
+
+      </tr>
+    </th:block>
+    </tbody>
+  </table>
+</div>
+
+
+</body>
+<script>
+
+  function buscarClientes() {
+    const nome = document.getElementById('searchInput').value;
+    fetch('/clientes/buscar?nome=' + nome)
+            .then(response => response.json())
+            .then(data => {
+              const tbody = document.querySelector('#clientesTable tbody');
+              tbody.innerHTML = '';
+
+              data.forEach(c => {
+                const row = `<tr>
+            <td>${c.id}</td>
+            <td>${c.nome}</td>
+            <td>${c.email}</td>
+            <td>
+              <a href="/clientes/edit/${c.id}">Editar</a>
+              <a href="/clientes/delete/${c.id}" onclick="return confirm('Sure you want to delete?');">Excluir</a>
+            </td>
+          </tr>`;
+                tbody.innerHTML += row;
+              });
+            });
+  }
+  function enviarLembrete(button) {
+    const clienteId = button.getAttribute('data-id');
+    const clienteNome = button.getAttribute('data-name');
+
+    if(confirm(`Enviar lembrete para ${clienteNome}?`)) {
+      button.disabled = true;
+      button.textContent = 'Enviando...';
+
+      fetch(`/clientes/${clienteId}/enviar-lembrete`, {
+        method: 'POST'
+      })
+              .then(response => {
+                if (!response.ok) throw new Error('Erro na rede');
+                return response.text();
+              })
+              .then(message => {
+                alert(message);
+                button.textContent = '✓ Enviado';
+              })
+              .catch(error => {
+                console.error('Erro:', error);
+                alert('Falha ao enviar: ' + error.message);
+                button.textContent = 'Tentar novamente';
+                button.disabled = false;
+              });
+    }
+  }
+</script>
+
+</html>
