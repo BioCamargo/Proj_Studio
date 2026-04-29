@@ -28,9 +28,6 @@ public class UserController {
     @Autowired
     private RoleService roleService;
 
-
-
-
     @GetMapping
     public String listar(Model model, Principal principal) {
         try {
@@ -54,8 +51,6 @@ public class UserController {
 
     @PostMapping
     public String salvar(@Valid @ModelAttribute("usuario") UserDTO dto, BindingResult result, Model model) throws IOException {
-
-
         if (result.hasErrors()) {
             model.addAttribute("roles", roleService.listarTodos());
             return "usuario/form";

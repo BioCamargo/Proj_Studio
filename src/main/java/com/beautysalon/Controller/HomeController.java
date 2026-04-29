@@ -13,7 +13,7 @@ public class HomeController
     {
         model.addAttribute("contentPage", "home/indexContent");
         model.addAttribute("content", "home/welcome"); // Página de boas-vindas
-        model.addAttribute("pageTitle", "Beauty Salon - Home");
+        model.addAttribute("pageTitle", "Control App - Home");
         return "home/index";
 
     }

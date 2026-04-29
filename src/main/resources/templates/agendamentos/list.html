@@ -1,94 +1,17 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="_csrf" th:content="${_csrf.token}"/>
-    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
-    <title th:text="${pageTitle}">Lista de Agendamentos</title>
-    <link th:href="@{/css/style.css}" rel="stylesheet">
-    <style>
-        .table-container {
-            margin: 20px;
-            padding: 20px;
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        .table-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        .agendamento-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        .agendamento-table th, .agendamento-table td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-        .agendamento-table th {
-            background-color: #f8f9fa;
-            font-weight: bold;
-        }
-        .btn {
-            padding: 8px 16px;
-            border-radius: 4px;
-            text-decoration: none;
-            font-weight: 500;
-        }
-        .btn-primary {
-            background-color: #007bff;
-            color: white;
-            border: none;
-        }
-        .btn-primary:hover {
-            background-color: #0069d9;
-        }
-        .status-badge {
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 500;
-        }
-        .status-confirmado {
-            background-color: #d4edda;
-            color: #155724;
-        }
-        .status-pendente {
-            background-color: #fff3cd;
-            color: #856404;
-        }
-        .status-cancelado {
-            background-color: #f8d7da;
-            color: #721c24;
-        }
-        .action-links {
-            display: flex;
-            gap: 10px;
-        }
-        .action-link {
-            padding: 4px 8px;
-            border-radius: 4px;
-            text-decoration: none;
-            color: #007bff;
-        }
-        .action-link:hover {
-            text-decoration: underline;
-        }
-        .delete {
-            color: #dc3545;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title th:text="${pageTitle}">Lista de Clientes</title>
+  <link th:href="@{/css/style.css}" rel="stylesheet">
 </head>
 <body>
 
 <div class="table-container">
     <div class="table-header">
         <h2 th:text="${pageTitle}">Agendamentos</h2>
-        <a th:href="@{/agendamentos/novo}" class="btn btn-primary">Novo Agendamento</a>
+        <button class="btn btn-primary" onclick="window.location.href='/agendamentos/novo'">Novo Agendamento</button>
+        <button class="btn btn-primary" onclick="window.location.href='/home'">Voltar</button> 
     </div>
 
     <div class="search-container">

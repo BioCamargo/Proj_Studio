@@ -3,13 +3,14 @@
 <link th:href="@{/css/style.css}" rel="stylesheet" />
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
 <div th:fragment="welcome">
-    <h2>Welcome to Beauty Salon</h2>
-    <p>Полная система управления для вашего салона красоты</p>
+    <div style="text-align: center;">
+        <h2>Bem vindo a Control App</h2>
+        <p>Um sistema de gestão completo para sua Empresa.</p>
 
-    <div th:if="${#authentication.principal == 'anonymousUser'}">
-        <a th:href="@{/login}" class="btn btn-primary">Login</a>
+        <div th:if="${#authentication.principal == 'anonymousUser'}">
+            <a th:href="@{/login}" class="btn btn-primary">Login</a>
+        </div>
     </div>
-
     <div th:unless="${#authentication.principal == 'anonymousUser'}">
         <p>Olá, <span th:text="${#authentication.principal.username}"></span>!</p>
     </div>

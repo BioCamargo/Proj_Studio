@@ -2,20 +2,21 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title th:text="${pageTitle} ?: 'Beauty Salon'">Beauty Salon</title>
+    <title th:text="${pageTitle} ?: 'Control App'">Control App</title>
     <link th:href="@{/css/style.css}" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 <header>
-    <h1>Beauty Salon</h1>
+    <h1>Control App</h1>
     <nav>
         <ul>
-            <li><a th:href="@{/clientes}">Clients</a></li>
-            <li><a th:href="@{/agendamentos}">Appointments</a></li>
-            <li><a th:href="@{/servicos}">Services</a></li>
-            <li><a th:href="@{/roles}">Roles</a></li>
-            <li><a th:href="@{/usuarios}">Users</a></li>
+            <li><a th:href="@{/clientes}">Clientes</a></li>            
+            <li><a th:href="@{/servicos}">Serviços</a></li>
+            <li><a th:href="@{/agendamentos}">Agendamentos</a></li>
+           <!-- <li><a th:href="@{/roles}">Regras</a></li>-->
+            <li><a th:href="@{/usuarios}">Usuarios</a></li>
+            <li><a th:href="@{/login}">Sair</a></li>
         </ul>
     </nav>
 </header>
@@ -25,7 +26,7 @@
 </main>
 
 <footer>
-    <p>&copy; 2025 Beauty Salon</p>
+    <p>&copy; 2026 Control App</p>
 </footer>
 </body>
 </html>

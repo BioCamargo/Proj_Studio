@@ -7,56 +7,55 @@
 </head>
 <body>
 <div class="table-container">
+  
   <div class="table-header">
-    <h2 th:text="${pageTitle}">Clients</h2>
-    <button class="btn btn-primary" onclick="window.location.href='/clientes/novo'">New Client</button>
+    <h2 th:text="${pageTitle}">Clientes</h2>
+    <button class="btn btn-primary" onclick="window.location.href='/clientes/novo'">Novo Cliente</button>
+    <button class="btn btn-primary" onclick="window.location.href='/home'">Voltar</button>  
   </div>
+
+ 
 
   <div class="search-container">
     <form class="search-form" method="get" action="/clientes/pesquisar">
-      <input class="search-input" type="text" name="nome" placeholder="Search client name..." />
-      <button class="search-btn" type="submit">Search</button>
+      <input class="search-input" type="text" name="nome" placeholder="Buscar Cliente" />
+      <button class="search-btn" type="submit">Buscar</button>
+
+      <button class="btn btn-primary" onclick="window.location.href='/clientes'">Listar Todos</button> 
+        <table id="clientesTable">
+          <thead>
+          <tr>
+            <th>Código Cliente</th>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>Telefone</th>
+            <th>Ações</th>
+          </tr>
+          </thead>
+          <tbody>
+          <th:block th:each="c : ${clientes}">
+            <tr>
+              <td th:text="${c.id}"></td>
+              <td th:text="${c.nome}"></td>              
+              <td th:text="${c.email}"></td>
+              <td th:text="${c.telefone}"></td>
+              <td>
+                <div class="action-links">
+                  <a class="action-link" th:href="@{/clientes/edit/{id}(id=${c.id})}">Editar</a>
+                  <a class="action-link delete" th:href="@{/clientes/delete/{id}(id=${c.id})}"
+                    onclick="return confirm('Sure you want to delete?');">Excluir</a>
+                    <a class="action-link"
+                        th:attr="data-id=${c.id}, data-name=${c.nome}"
+                        onclick="enviarLembrete(this)"> Enviar Lembrete
+                </a>
+                </div>
+              </td>
+
+            </tr>
+          </th:block>
+          </tbody>
+        </table>
     </form>
-  </div>
-
-  <table id="clientesTable">
-    <thead>
-    <tr>
-      <th>ID</th>
-      <th>Name</th>
-      <th>Email</th>
-      <th>Actions</th>
-    </tr>
-    </thead>
-    <tbody>
-    <th:block th:each="c : ${clientes}">
-      <tr>
-        <td th:text="${c.id}"></td>
-        <td th:text="${c.nome}"></td>
-        <td th:text="${c.email}"></td>
-        <td>
-          <div class="action-links">
-            <a class="action-link" th:href="@{/clientes/edit/{id}(id=${c.id})}">Editar</a>
-            <a class="action-link delete" th:href="@{/clientes/delete/{id}(id=${c.id})}"
-               onclick="return confirm('Sure you want to delete?');">Excluir</a>
-
-          </div>
-        <td>
-          <button class="action-link email"
-                  th:attr="data-id=${c.id}, data-name=${c.nome}"
-                  onclick="enviarLembrete(this)">
-            Send Reminder
-          </button>
-        </td>
-        </td>
-
-      </tr>
-    </th:block>
-    </tbody>
-  </table>
-</div>
-
-
 </body>
 <script>
 
@@ -75,7 +74,7 @@
             <td>${c.email}</td>
             <td>
               <a href="/clientes/edit/${c.id}">Editar</a>
-              <a href="/clientes/delete/${c.id}" onclick="return confirm('Sure you want to delete?');">Excluir</a>
+              <a href="/clientes/delete/${c.id}" onclick="return confirm('Tem certeza de que deseja excluir?');">Excluir</a>
             </td>
           </tr>`;
                 tbody.innerHTML += row;

@@ -49,11 +49,11 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public ClienteDTO salvar(ClienteDTO dto) {
-
         try {
             Cliente cliente = new Cliente();
             cliente.setNome(dto.getNome());
             cliente.setEmail(dto.getEmail());
+            cliente.setTelefone(dto.getTelefone());
             Cliente salvo = clienteRepository.save(cliente);
             return clienteConverter.convert(salvo);
         }catch (Exception e) {
@@ -73,7 +73,7 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     private ClienteDTO toDTO(Cliente cliente) {
-        return new ClienteDTO(cliente.getId(), cliente.getNome(), cliente.getEmail());
+        return new ClienteDTO(cliente.getId(), cliente.getNome(), cliente.getEmail(), cliente.getTelefone(), cliente.getDataNascimento());
     }
     @Override
     public ClienteDTO atualizar(Long id, ClienteDTO dto) {

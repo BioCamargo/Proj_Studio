@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,7 +28,7 @@ public class AuthController {
     @GetMapping("/login")
     public String login(Model model) {
         model.addAttribute("contentPage", "auth/login");
-        model.addAttribute("pageTitle", "Login- Beauty Salon");
+        model.addAttribute("pageTitle", "Login - Control App");
         return "home/index";
     }
 
@@ -74,33 +73,6 @@ public class AuthController {
         response.put("success", true);
         return response;
     }
-
-
-//    @PostMapping("/register")
-//    public String registerUser(
-//        @Valid @ModelAttribute("userDTO") UserDTO userDTO,
-//                               BindingResult result,
-//                               Model model) throws IOException {
-//        // Verifica se username já existe
-//        if(userService.existsByUsername(userDTO.getUsername())) {
-//            result.rejectValue("username", "error.userDTO", "Este nome de usuário já está em uso");
-//        }
-//
-//        // Verifica se email já existe
-//        if(userService.existsByEmail(userDTO.getEmail())) {
-//            result.rejectValue("email", "error.userDTO", "Este email já está cadastrado");
-//        }
-//
-//        if(result.hasErrors()) {
-//            model.addAttribute("contentPage", "auth/register");
-//            model.addAttribute("pageTitle", "Registro - Beauty Salon");
-//            return "home/index";
-//        }
-//
-//        userService.registerNewUser(userDTO);
-//        return "redirect:/login?registered";
-//    }
-//
 
 
 

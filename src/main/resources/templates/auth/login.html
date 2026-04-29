@@ -2,16 +2,16 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Login | Beauty Salon</title>
+    <title>Login | Control App</title>
     <link th:href="@{/css/style.css}" rel="stylesheet">
 </head>
 <body>
 
 <div class="auth-container">
-    <h1 class="auth-title">BEAUTY SALON</h1>
+    <h1 class="auth-title">Control App</h1>
 
     <div th:if="${param.error}" class="auth-message error-message">
-        ⚠️ Invalid. Try again.
+        ⚠️ Usuário ou Senha Invalidos. Tente Novamente.
     </div>
 
     <div th:if="${param.registered}" class="auth-message success-message">
@@ -31,11 +31,14 @@
 
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 
-        <button type="submit" class="btn btn-primary" style="width: 100%;">ACCESS SISTEM</button>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Entrar</button>
     </form>
 
     <p class="auth-link">
-        New User? <a th:href="@{/register}">Create Account</a>
+        Novo Usuario?<div></div>         
+        <div style="text-align: center;">
+            <a th:href="@{/register}">Cadastrar</a>
+        </div>      
     </p>
 </div>
 

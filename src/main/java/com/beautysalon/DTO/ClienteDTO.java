@@ -10,18 +10,18 @@ public class ClienteDTO
 {
     private Long id;
 
-    @NotBlank(message = "Name is required")
-    @Size(min = 2, max = 100, message = "The name must be between 2 and 100 characters.")
+    @NotBlank(message = "Campo Obrigatorio")
+    @Size(min = 2, max = 100, message = "O nome deve ter entre 2 e 100 caracteres.")
     private String nome;
 
-    @NotBlank(message = "email is required")
-    @Email(message = "Email must be valid")
+    @NotBlank(message = "Campo Obrigatorio")
+    @Email(message = "O e-mail deve ser válido.")    
     private String email;
 
-    private String telefone; //vamos ver
-    private LocalDate dataNascimento; //vamos ver
+    private String telefone; 
+    private LocalDate dataNascimento; 
 
-    public ClienteDTO (Long id, String nome, String email)
+    public ClienteDTO (Long id, String nome, String email, String telefone, LocalDate dataNascimento)
     {
         this.id = id;
         this.nome = nome;
@@ -31,9 +31,7 @@ public class ClienteDTO
     }
 
     public ClienteDTO() {
-
     }
-
     public Long getId() {return id;}
     public void setId(Long id) {this.id = id;}
 

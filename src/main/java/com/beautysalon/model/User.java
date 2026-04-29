@@ -1,4 +1,4 @@
-package com.beautysalon.model;
+/*package com.beautysalon.model;
  import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  import jakarta.persistence.*;
  import lombok.*;
@@ -100,7 +100,64 @@ public class User
         this.username = username;
     }
 
+}*/
+
+package com.beautysalon.model;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.util.Set;
+
+@Entity
+@Getter 
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@ToString(exclude = "roles") // EVITA LOOP INFINITO
+@EqualsAndHashCode(exclude = "roles") // EVITA LOOP INFINITO
+@Table(name = "\"user\"")
+public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
+    private String nome;
+    private String username;
+
+    @Column(unique = true)
+    private String email;
+    
+    private String password;
+    private boolean ativo;
+
+    @Column(name= "image")
+    private String imagem;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name="user_id"),
+            inverseJoinColumns = @JoinColumn(name="role_id")
+    )
+    @JsonIgnoreProperties("users")
+    private Set<Role> roles;
+
+    public void setEnabled(boolean b) {
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 }
+
 
 
 

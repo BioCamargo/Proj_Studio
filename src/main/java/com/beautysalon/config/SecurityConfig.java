@@ -33,7 +33,7 @@ public class SecurityConfig {
         return provider;
     }
 
-    @Bean
+ /*   @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth //"/home/login"
@@ -67,8 +67,59 @@ public class SecurityConfig {
                 //.csrf(csrf -> csrf.disable());// Desabilite CSRF temporariamente para testes
 
         return http.build();
-    }
+    }*/
 
+    @Bean
+        public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+                .authorizeHttpRequests(auth -> auth
+                // 1. RECURSOS ESTÁTICOS E PÁGINAS PÚBLICAS
+                .requestMatchers(
+                        "/", 
+                        "/login", 
+                        "/register", 
+                        "/css/**", 
+                        "/js/**", 
+                        "/images/**", 
+                        "/uploads/**", 
+                        "/favicon.ico"
+                ).permitAll()
+                
+                // 2. REGRAS ESPECÍFICAS (Sempre do mais restrito para o mais genérico)
+                .requestMatchers("/roles/**").hasRole("ADMIN")
+                .requestMatchers("/api/**").permitAll() // Ou configure conforme sua necessidade
+                
+                // 3. PÁGINAS QUE EXIGEM LOGIN
+                .requestMatchers(
+                        "/home/**", 
+                        "/usuarios/**", 
+                        "/clientes/**", 
+                        "/agendamentos/**", 
+                        "/servicos/**"
+                ).authenticated()
+
+                .anyRequest().authenticated()
+                )
+                .formLogin(form -> form
+                .loginPage("/login")
+                .defaultSuccessUrl("/home", true) 
+                .permitAll()
+                )
+                .logout(logout -> logout
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/login?logout")
+                .permitAll()
+                )
+                .csrf(csrf -> csrf
+                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                .ignoringRequestMatchers("/api/**", "/h2-console/**")
+                )
+                .headers(headers -> headers
+                .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
+                );
+
+        return http.build();
+        }
 
 
 

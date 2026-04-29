@@ -9,7 +9,6 @@ public interface ClienteService {
     ClienteDTO buscarPorId(Long id);
     ClienteDTO salvar(ClienteDTO clienteDTO);
     void deletar(Long id);
-
     ClienteDTO atualizar(Long id, ClienteDTO dto);
     List<ClienteDTO> buscarPorNomeParcial(String nome);
 

@@ -1,4 +1,4 @@
-package com.beautysalon.model;
+/*package com.beautysalon.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -43,4 +43,39 @@ public class Role
 //    {
 //        return null;
 //    }
+}*/
+
+
+package com.beautysalon.model;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.util.Set;
+
+@Entity
+@Getter 
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@ToString(exclude = "users") // EVITA LOOP INFINITO
+@EqualsAndHashCode(exclude = "users") // EVITA LOOP INFINITO
+public class Role {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(unique = true)
+    private String nome;
+
+    @ManyToMany(mappedBy = "roles")
+    @JsonIgnore
+    private Set<User> users;
+
+    public Role(String nome) {
+        this.nome = nome;
+    }
 }
